@@ -27,6 +27,7 @@ for line in sys.stdin:
                 if sys.argv[1] == "AVGctr":
                     AVGctr = float(current_click+ 0.05 * 75) / (current_impression+ 75)
                     print '%s\t%s' % (current_feature, AVGctr)
+
             current_click = click
             current_impression = 1
             current_feature = feature
@@ -36,5 +37,5 @@ for line in sys.stdin:
 if current_feature == feature:
     #collect last time
     if sys.argv[1] == "AVGctr":
-        AVGctr = float(current_click + 0.05 * 75) / (current_impression + 75)
-        print '%s\t%s' % (current_feature, AVGctr)
+        AVGctr = float(current_click) / (current_impression)
+        print '%s\t%.2f' % (current_feature, AVGctr)
