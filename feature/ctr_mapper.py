@@ -45,28 +45,19 @@ for line in sys.stdin:
         print '%s\t%s' % (line[14], line[1])
     elif sys.argv[1] == 'device_conn_type':
         print '%s\t%s' % (line[15], line[1])
-"""
-    elif sys.argv[1] == 'RPosition':
-        try:
-            depth = float(line[5])
-            position = float(line[6])
-        except ValueError:
-            continue
-        print '%.2f\t%s\t%s' % ((depth - position) / depth, line[0], line[1])
-""" 
     elif sys.argv[1] == 'C14':
-        print '%s\t%s' % (line[15], line[1])
-    elif sys.argv[1] == 'C15':
         print '%s\t%s' % (line[16], line[1])
-    elif sys.argv[1] == 'C16':
+    elif sys.argv[1] == 'C15':
         print '%s\t%s' % (line[17], line[1])
-    elif sys.argv[1] == 'C17':
+    elif sys.argv[1] == 'C16':
         print '%s\t%s' % (line[18], line[1])
-    elif sys.argv[1] == 'C18':
+    elif sys.argv[1] == 'C17':
         print '%s\t%s' % (line[19], line[1])
-    elif sys.argv[1] == 'C19':
+    elif sys.argv[1] == 'C18':
         print '%s\t%s' % (line[20], line[1])
-    elif sys.argv[1] == 'C20':
+    elif sys.argv[1] == 'C19':
         print '%s\t%s' % (line[21], line[1])
-    elif sys.argv[1] == 'C21':
+    elif sys.argv[1] == 'C20':
         print '%s\t%s' % (line[22], line[1])
+    elif sys.argv[1] == 'C21':
+        print '%s\t%s' % (line[23], line[1])
