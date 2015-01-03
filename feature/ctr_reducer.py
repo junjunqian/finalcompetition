@@ -25,7 +25,7 @@ for line in sys.stdin:
         else:
             if current_feature:
                 if sys.argv[1] == "AVGctr":
-                    AVGctr = float(current_click + 0.05 * 75) / (current_impression + 75)
+                    AVGctr = float(current_click) / (current_impression)
                     print '%s\t%s' % (current_feature, AVGctr)
             current_click = click
             current_impression = 1
