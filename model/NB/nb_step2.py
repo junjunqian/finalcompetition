@@ -99,9 +99,11 @@ for line in sys.stdin:
         current_impression = 0
         try:
             if current_feature == feature:
+                current_impression += 1
             else:
                 current_feature = feature
                 unique_ad_identifier += 1
+                current_impression = 1
         except ValueError:
             continue
         if clicknonclick == 0:
@@ -231,5 +233,27 @@ for line in sys.stdin:
             else:
                 current_feature = feature
                 unique_device_ip += 1
+        except ValueError:
+            continue
+
+    elif 'device_model' in feature:
+        current_feature = None
+        current_impression = 0
+        try:
+            if current_feature == feature:
+            else:
+                current_feature = feature
+                unique_device_model += 1
+        except ValueError:
+            continue
+
+    elif 'device_type' in feature:
+        current_feature = None
+        current_impression = 0
+        try:
+            if current_feature == feature:
+            else:
+                current_feature = feature
+                unique_device_type += 1
         except ValueError:
             continue
