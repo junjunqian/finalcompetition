@@ -99,11 +99,11 @@ for line in sys.stdin:
         current_impression = 0
         try:
             if current_feature == feature:
-                current_impression += 1
+#                current_impression += 1
             else:
                 current_feature = feature
                 unique_ad_identifier += 1
-                current_impression = 1
+#                current_impression = 1
         except ValueError:
             continue
         if clicknonclick == 0:
@@ -114,7 +114,7 @@ for line in sys.stdin:
         ad_identifier_nonclick = current_nonclick
         total_click = current_click
         total_nonclick = current_nonclick
-
+        total_impression = total_click + total_nonclick
     elif 'hour' in feature:
         current_feature = None
         current_impression = 0
