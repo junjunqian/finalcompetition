@@ -7,7 +7,6 @@ output: feature&value , Pr(feature=value|click) , Pr(feature=value|no-click)
         totaltotal    , Pr(click)               , Pr(noclick)
 """
 
-import re
 import sys
 #from os import listdir
 #from os.path import isfile, join
@@ -16,11 +15,10 @@ import sys
 #the following is all the numbers we need to count in the first loop
 
 total_click = 0
-total_nonclick = 0
+total_impression = 0
 
-unique_ad_identifier = 0
 unique_hour = 0
-unique_C1 = 0
+unique_C01 = 0
 unique_banner_pos = 0
 unique_site_id = 0
 unique_site_domain = 0
@@ -41,512 +39,500 @@ unique_C18 = 0
 unique_C19 = 0
 unique_C20 = 0
 unique_C21 = 0
+unique_time = 0
+unique_day = 0
 
-ad_identifier_click = 0
-hour_click = 0
-C1_click = 0
-banner_pos_click = 0
-site_id_click = 0
-site_domain_click = 0
-site_category_click = 0
-app_id_click = 0
-app_domain_click = 0
-app_category_click = 0
-device_id_click = 0
-device_ip_click = 0
-device_model_click = 0
-device_type_click = 0
-device_conn_type_click = 0
-C14_click = 0
-C15_click = 0
-C16_click = 0
-C17_click = 0
-C18_click = 0
-C19_click = 0
-C20_click = 0
-C21_click = 0
+unk_hour_click = 0
+unk_C01_click = 0
+unk_banner_pos_click = 0
+unk_site_id_click = 0
+unk_site_domain_click = 0
+unk_site_category_click = 0
+unk_app_id_click = 0
+unk_app_domain_click = 0
+unk_app_category_click = 0
+unk_device_id_click = 0
+unk_device_ip_click = 0
+unk_device_model_click = 0
+unk_device_type_click = 0
+unk_device_conn_type_click = 0
+unk_C14_click = 0
+unk_C15_click = 0
+unk_C16_click = 0
+unk_C17_click = 0
+unk_C18_click = 0
+unk_C19_click = 0
+unk_C20_click = 0
+unk_C21_click = 0
+unk_time_click = 0
+unk_day_click = 0
 
-ad_identifier_nonclick = 0
-hour_nonclick = 0
-C1_nonclick = 0
-banner_pos_nonclick = 0
-site_id_nonclick = 0
-site_domain_nonclick = 0
-site_category_nonclick = 0
-app_id_nonclick = 0
-app_domain_nonclick = 0
-app_category_nonclick = 0
-device_id_nonclick = 0
-device_ip_nonclick = 0
-device_model_nonclick = 0
-device_type_nonclick = 0
-device_conn_type_nonclick = 0
-C14_nonclick = 0
-C15_nonclick = 0
-C16_nonclick = 0
-C17_nonclick = 0
-C18_nonclick = 0
-C19_nonclick = 0
-C20_nonclick = 0
-C21_nonclick = 0
+unk_hour_imp = 0
+unk_C01_imp = 0
+unk_banner_pos_imp = 0
+unk_site_id_imp = 0
+unk_site_domain_imp = 0
+unk_site_category_imp = 0
+unk_app_id_imp = 0
+unk_app_domain_imp = 0
+unk_app_category_imp = 0
+unk_device_id_imp = 0
+unk_device_ip_imp = 0
+unk_device_model_imp = 0
+unk_device_type_imp = 0
+unk_device_conn_type_imp = 0
+unk_C14_imp = 0
+unk_C15_imp = 0
+unk_C16_imp = 0
+unk_C17_imp = 0
+unk_C18_imp = 0
+unk_C19_imp = 0
+unk_C20_imp = 0
+unk_C21_imp = 0
+unk_time_imp = 0
+unk_day_imp = 0
 
 #read the input file
 for line in sys.stdin:
     line = line.strip()
-    feature, clicknonclick = line.split(',')
-    
-    if 'ad identifier' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-#                current_impression += 1
-            else:
-                current_feature = feature
-                unique_ad_identifier += 1
-#                current_impression = 1
-        except ValueError:
-            continue
-        if clicknonclick == 0:
-            current_nonclick += 1
-        elif clicknonclick == 1:
-            current_click += 1
-        ad_identifier_click = current_click
-        ad_identifier_nonclick = current_nonclick
-        total_click = current_click
-        total_nonclick = current_nonclick
-        total_impression = total_click + total_nonclick
+    feature, click, impression = line.split(',')
+    try:
+        click = int(click)
+        impression = int(impression)
+    except ValueError:
+        continue
 
-    elif 'hour' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_hour += 1
-        except ValueError:
-            continue
+    if 'hour' in feature:
+        if impression > int(sys.argv[1]):
+            unique_hour += 1
+        else:
+            unk_hour_click += click
+            unk_hour_imp += imp
+        total_click += click
+        total_impression += impression
 
-    elif 'C1' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_C1 += 1
-        except ValueError:
-            continue
+
+    elif 'time' in feature:
+        if impression > int(sys.argv[1]):
+            unique_time += 1
+        else:
+            unk_time_click += 1
+            unk_time_imp += 1
+
+    elif 'day' in feature:
+        if impression > int(sys.argv[1]):
+            unique_day += 1
+        else:
+            unk_day_click += 1
+            unk_day_imp += 1
+
+
+    elif 'C01' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C01 += 1
+        else:
+            unk_C01_click += 1
+            unk_C01_imp += 1
 
     elif 'banner_pos' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_banner_pos += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_banner_pos += 1
+        else:
+            unk_banner_pos_click += 1
+            unk_banner_pos_imp += 1
 
     elif 'site_id' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_site_id += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_site_id += 1
+        else:
+            unk_site_id_click += 1
+            unk_site_id_imp += 1
 
     elif 'site_domain' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_site_domain += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_site_domain += 1
+        else:
+            unk_site_domain_click += 1
+            unk_site_domain_imp += 1
 
     elif 'site_category' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_site_category += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_site_category += 1
+        else:
+            unk_site_category_click += 1
+            unk_site_category_imp += 1
 
     elif 'app_id' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_app_id += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_app_id += 1
+        else:
+            unk_app_id_click += 1
+            unk_app_id_imp += 1
 
     elif 'app_domain' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_app_domain += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_app_domain += 1
+        else:
+            unk_app_domain_click += 1
+            unk_app_domain_imp += 1
 
     elif 'app_category' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_app_category += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_app_category += 1
+        else:
+            unk_app_category_click += 1
+            unk_app_category_imp += 1
 
     elif 'device_id' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_device_id += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_device_id += 1
+        else:
+            unk_device_id_click += 1
+            unk_device_id_imp += 1
 
     elif 'device_ip' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_device_ip += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_device_ip += 1
+        else:
+            unk_device_ip_click += 1
+            unk_device_ip_imp += 1
 
     elif 'device_model' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_device_model += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_device_model += 1
+        else:
+            unk_device_model_click += 1
+            unk_device_model_imp += 1
 
     elif 'device_type' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_device_type += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_device_model += 1
+        else:
+            unk_device_model_click += 1
+            unk_device_model_imp += 1
 
     elif 'device_conn_type' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_device_conn_type += 1
-        except ValueError:
-            continue
+        if impression > int(sys.argv[1]):
+            unique_device_type += 1
+        else:
+            unk_device_type_click += 1
+            unk_device_type_imp += 1
 
-    elif 'C14' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C14 += 1
-        except ValueError:
-            continue
+    elif 'C14' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C14 += 1
+        else:
+            unk_C14_click += 1
+            unk_C14_imp += 1
 
-    elif 'C15' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C15 += 1
-        except ValueError:
-            continue
+    elif 'C15' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C15 += 1
+        else:
+            unk_C15_click += 1
+            unk_C15_imp += 1
 
-    elif 'C16' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C16 += 1
-        except ValueError:
-            continue
+    elif 'C16' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C16 += 1
+        else:
+            unk_C16_click += 1
+            unk_C16_imp += 1
 
-    elif 'C17' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C17 += 1
-        except ValueError:
-            continue
+    elif 'C17' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C17 += 1
+        else:
+            unk_C17_click += 1
+            unk_C17_imp += 1
 
-    elif 'C18' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C18 += 1
-        except ValueError:
-            continue
+    elif 'C18' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C18 += 1
+        else:
+            unk_C18_click += 1
+            unk_C18_imp += 1
 
-    elif 'C19' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C19 += 1
-        except ValueError:
-            continue
+    elif 'C19' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C19 += 1
+        else:
+            unk_C19_click += 1
+            unk_C19_imp += 1
 
-    elif 'C20' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C20 += 1
-        except ValueError:
-            continue
+    elif 'C20' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C20 += 1
+        else:
+            unk_C20_click += 1
+            unk_C20_imp += 1
 
-    elif 'C21' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            if current_feature == feature:
-            else:
-                current_feature = feature
-                unique_ C21 += 1
-        except ValueError:
-            continue
-
-"""
-    if 'ad_identifier' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            clicknonclick = int(clicknonclick)
-            if current_feature == feature:
-                if clicknonclick != 0:
-                    ad_identifier_click += 1
-                current_impression += 1
-            else:
-                ad_identifier_click = clicknonclick
-                current_impression = 1
-                current_feature = feature
-                unique_ad_identifier += 1
-        except ValueError:
-            continue
-        ad_identifier_nonclick = current_impression - ad_identifier_click
-
-    elif 'hour' in feature:
-        current_feature = None
-        current_impression = 0
-        try:
-            clicknonclick = int(clicknonclick)
-            if current_feature == feature:
-                if clicknonclick != 0:
-                    hour_click += 1
-                current_impression += 1
-            else:
-                ad_identifier_click = clicknonclick
-                current_impression = 1
-                current_feature = feature
-                unique_hour += 1
-        except ValueError:
-            continue
-        ad_identifier_nonclick = current_impression - ad_identifier_click
-"""
+    elif 'C21' in feature[0:3]:
+        if impression > int(sys.argv[1]):
+            unique_C21 += 1
+        else:
+            unk_C21_click += 1
+            unk_C21_imp += 1
 
 
 for line in sys.stdin:
     line = line.strip()
-    feature, clicknonclick = line.split(',')
-        # for feature = value, calculate Pr(feature=value|click) and Pr(feature=value|no-click)
-    if 'ad identifier' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_ad_identifier)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_ad_identifier)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
-    elif 'hour' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_hour)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_hour)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    feature, click, impression = line.split(',')
+    print "hahahahahahahahshjdhkashdkjashjkdhjaksdkjasdhjkashdjkhsk"
 
-    elif 'C1' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C1)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C1)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    try:
+        click = int(click)
+        impression = int(impression)
+    except ValueError:
+        continue
 
-    elif 'banner_pos' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_banner_pos)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_banner_pos)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    if 'hour' in feature:
+        print "hahahahahahahahshjdhkashdkjashjkdhjaksdkjasdhjkashdjkhsk"
 
-    elif 'site_id' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_site_id)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_site_id)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+        p1 = float(click + 1) / (total_click + unique_hour)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_hour)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'site_domain' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_site_domain)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_site_domain)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'time' in feature:
+        p1 = float(click + 1) / (total_click + unique_time)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_time)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'site_category' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_site_category)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_site_category)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'day' in feature:
+        p1 = float(click + 1) / (total_click + unique_hour)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_hour)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'app_id' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_app_id)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_app_id)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'C01' in feature[0:3]:
+        print "hahahahahahahahshjdhkashdkjashjkdhjaksdkjasdhjkashdjkhsk"
 
-    elif 'app_domian' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_app_domian)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_app_domian)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+        p1 = float(click + 1) / (total_click + unique_C01)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C01)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'app_category' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_app_category)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_app_category)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
 
-    elif 'device_id' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_device_id)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_device_id)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'banner_pos' in feature:
+        p1 = float(click + 1) / (total_click + unique_banner_pos)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_banner_pos)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'device_ip' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_device_ip)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_device_ip)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'site_id' in feature:
+        p1 = float(click + 1) / (total_click + unique_site_id)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_site_id)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'device_model' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_device_model)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_device_model)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'site_domain' in feature:
+        p1 = float(click + 1) / (total_click + unique_site_domain)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_site_domain)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'device_type' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_device_type)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_device_type)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'site_category' in feature:
+        p1 = float(click + 1) / (total_click + unique_site_category)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_site_category)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'device_conn_type' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_device_conn_type)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_device_conn_type)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'app_id' in feature:
+        p1 = float(click + 1) / (total_click + unique_app_id)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_app_id)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'C14' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C14)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C14)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'app_domian' in feature:
+        p1 = float(click + 1) / (total_click + unique_app_domian)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_app_domian)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'C15' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C15)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C15)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'app_category' in feature:
+        p1 = float(click + 1) / (total_click + unique_app_category)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_app_category)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'C16' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C16)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C16)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'device_id' in feature:
+        p1 = float(click + 1) / (total_click + unique_device_id)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_device_id)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'C17' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C17)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C17)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'device_ip' in feature:
+        p1 = float(click + 1) / (total_click + unique_device_ip)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_device_ip)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'C18' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C18)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C18)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'device_model' in feature:
+        p1 = float(click + 1) / (total_click + unique_device_model)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_device_model)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'C19' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C19)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C19)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'device_type' in feature:
+        p1 = float(click + 1) / (total_click + unique_device_type)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_device_type)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-    elif 'C20' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C20)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C20)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
-    elif 'C21' in item[0]:
-        p1 = float(total_click) + 1) / (total_click + unique_C21)
-        p2 = float(total_nonclick) + 1) / (total_nonclick + unique_C21)
-        print '%s\t%.9f\t%.9f' % (item[0], p1, p2)
+    elif 'device_conn_type' in feature:
+        p1 = float(click + 1) / (total_click + unique_device_conn_type)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_device_conn_type)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
 
-"""
-#calculate Pr(feature=unk|click) and Pr(feature=unk|no-click)
-p1 = float(1 + unk_ad_id_click) / (total_click + unique_ad_id + 1)
-p2 = float(1 + unk_ad_id_imp - unk_ad_id_click) / (total_impression - total_click + unique_ad_id + 1)
-print '%s\t%.9f\t%.9f' % ('ad_id_unk', p1, p2)
-p1 = float(1 + unk_advertiser_id_click) / (total_click + unique_advertiser_id + 1)
-p2 = float(1 + unk_advertiser_id_imp - unk_advertiser_id_click) / (total_impression - total_click + unique_advertiser_id + 1)
-print '%s\t%.9f\t%.9f' % ('advertiser_id_unk',p1, p2)
-p1 = float(1 + unk_depth_click) / (total_click + unique_depth + 1)
-p2 = float(1 + unk_depth_imp - unk_depth_click) / (total_impression - total_click + unique_depth + 1)
-print '%s\t%.9f\t%.9f' % ('depth_unk', p1, p2)
-p1 = float(1 + unk_position_click) / (total_click + unique_position+ 1)
-p2 = float(1 + unk_position_imp - unk_position_click) / (total_impression - total_click + unique_position + 1)
-print '%s\t%.9f\t%.9f' % ('position_unk', p1, p2)
-p1 = float(1 + unk_query_id_click) / (total_click + unique_query_id + 1)
-p2 = float(1 + unk_query_id_imp - unk_query_id_click) / (total_impression - total_click + unique_query_id + 1)
-print '%s\t%.9f\t%.9f' % ('query_id_unk', p1, p2)
-p1 = float(1 + unk_keyword_id_click) / (total_click + unique_keyword_id + 1)
-p2 = float(1 + unk_keyword_id_imp - unk_keyword_id_click) / (total_impression - total_click + unique_keyword_id + 1)
-print '%s\t%.9f\t%.9f' % ('keyword_id_unk', p1, p2)
-p1 = float(1 + unk_title_id_click) / (total_click + unique_title_id + 1)
-p2 = float(1 + unk_title_id_imp - unk_title_id_click) / (total_impression - total_click + unique_title_id + 1)
-print '%s\t%.9f\t%.9f' % ('title_id_unk', p1, p2)
-p1 = float(1 + unk_description_id_click) / (total_click + unique_description_id + 1)
-p2 = float(1 + unk_description_id_imp - unk_description_id_click) / (total_impression - total_click + unique_description_id + 1)
-print '%s\t%.9f\t%.9f' % ('description_id_unk', p1, p2)
-p1 = float(1 + unk_user_id_click) / (total_click + unique_user_id + 1)
-p2 = float(1 + unk_user_id_imp - unk_user_id_click) / (total_impression - total_click + unique_user_id + 1)
-print '%s\t%.9f\t%.9f' % ('user_id_unk', p1, p2)
-"""
+    elif 'C14' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C14)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C14)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+    elif 'C15' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C15)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C15)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+    elif 'C16' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C16)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C16)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+    elif 'C17' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C17)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C17)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+    elif 'C18' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C18)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C18)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+    elif 'C19' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C19)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C19)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+    elif 'C20' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C20)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C20)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+    elif 'C21' in feature[0:3]:
+        p1 = float(click + 1) / (total_click + unique_C21)
+        p2 = float(impression - click + 1) / (total_impression - total_click + unique_C21)
+        print '%s,%.6f,%.6f' % (feature, p1, p2)
+
+
+
+
+p1 = float(1 + unk_hour_click) / (total_click + unique_hour + 1)
+p2 = float(1 + unk_hour_imp - unk_hour_click) / (total_impression - total_click + unique_hour + 1)
+print '%s,%.6f,%.6f' % ("unk_hour", p1, p2)
+
+
+p1 = float(1 + unk_time_click) / (total_click + unique_time + 1)
+p2 = float(1 + unk_time_imp - unk_time_click) / (total_impression - total_click + unique_time + 1)
+print '%s,%.6f,%.6f' % ("unk_time", p1, p2)
+
+
+p1 = float(1 + unk_day_click) / (total_click + unique_day + 1)
+p2 = float(1 + unk_day_imp - unk_day_click) / (total_impression - total_click + unique_day + 1)
+print '%s,%.6f,%.6f' % ("unk_day", p1, p2)
+
+
+p1 = float(1 + unk_C01_click) / (total_click + unique_C01 + 1)
+p2 = float(1 + unk_C01_imp - unk_C01_click) / (total_impression - total_click + unique_C01 + 1)
+print '%s,%.6f,%.6f' % ("unk_C01", p1, p2)
+
+
+p1 = float(1 + unk_banner_pos_click) / (total_click + unique_banner_pos + 1)
+p2 = float(1 + unk_banner_pos_imp - unk_banner_pos_click) / (total_impression - total_click + unique_banner_pos + 1)
+print '%s,%.6f,%.6f' % ("unk_banner_pos", p1, p2)
+
+
+p1 = float(1 + unk_site_id_click) / (total_click + unique_site_id + 1)
+p2 = float(1 + unk_site_id_imp - unk_site_id_click) / (total_impression - total_click + unique_site_id + 1)
+print '%s,%.6f,%.6f' % ("unk_site_id", p1, p2)
+
+
+p1 = float(1 + unk_site_domain_click) / (total_click + unique_site_domain + 1)
+p2 = float(1 + unk_site_domain_imp - unk_site_domain_click) / (total_impression - total_click + unique_site_domain + 1)
+print '%s,%.6f,%.6f' % ("unk_site_domain", p1, p2)
+
+
+p1 = float(1 + unk_site_category_click) / (total_click + unique_site_category + 1)
+p2 = float(1 + unk_site_category_imp - unk_site_category_click) / (total_impression - total_click + unique_site_category + 1)
+print '%s,%.6f,%.6f' % ("unk_site_category", p1, p2)
+
+
+p1 = float(1 + unk_app_id_click) / (total_click + unique_app_id + 1)
+p2 = float(1 + unk_app_id_imp - unk_app_id_click) / (total_impression - total_click + unique_app_id + 1)
+print '%s,%.6f,%.6f' % ("unk_app_id", p1, p2)
+
+
+p1 = float(1 + unk_app_domain_click) / (total_click + unique_app_domain + 1)
+p2 = float(1 + unk_app_domain_imp - unk_app_domain_click) / (total_impression - total_click + unique_app_domain + 1)
+print '%s,%.6f,%.6f' % ("unk_app_domain", p1, p2)
+
+
+p1 = float(1 + unk_app_category_click) / (total_click + unique_app_category + 1)
+p2 = float(1 + unk_app_category_imp - unk_app_category_click) / (total_impression - total_click + unique_app_category + 1)
+print '%s,%.6f,%.6f' % ("unk_app_category", p1, p2)
+
+
+p1 = float(1 + unk_device_id_click) / (total_click + unique_device_id + 1)
+p2 = float(1 + unk_device_id_imp - unk_device_id_click) / (total_impression - total_click + unique_device_id + 1)
+print '%s,%.6f,%.6f' % ("unk_device_id", p1, p2)
+
+
+p1 = float(1 + unk_device_ip_click) / (total_click + unique_device_ip + 1)
+p2 = float(1 + unk_device_ip_imp - unk_device_ip_click) / (total_impression - total_click + unique_device_ip + 1)
+print '%s,%.6f,%.6f' % ("unk_device_ip", p1, p2)
+
+
+p1 = float(1 + unk_device_model_click) / (total_click + unique_device_model + 1)
+p2 = float(1 + unk_device_model_imp - unk_device_model_click) / (total_impression - total_click + unique_device_model + 1)
+print '%s,%.6f,%.6f' % ("unk_device_model", p1, p2)
+
+
+p1 = float(1 + unk_device_type_click) / (total_click + unique_device_type + 1)
+p2 = float(1 + unk_device_type_imp - unk_device_type_click) / (total_impression - total_click + unique_device_type + 1)
+print '%s,%.6f,%.6f' % ("unk_device_type", p1, p2)
+
+
+p1 = float(1 + unk_device_conn_type_click) / (total_click + unique_device_conn_type + 1)
+p2 = float(1 + unk_device_conn_type_imp - unk_device_conn_type_click) / (total_impression - total_click + unique_device_conn_type + 1)
+print '%s,%.6f,%.6f' % ("unk_device_conn_type", p1, p2)
+
+
+p1 = float(1 + unk_C14_click) / (total_click + unique_C14 + 1)
+p2 = float(1 + unk_C14_imp - unk_C14_click) / (total_impression - total_click + unique_C14 + 1)
+print '%s,%.6f,%.6f' % ("unk_C14", p1, p2)
+
+
+p1 = float(1 + unk_C15_click) / (total_click + unique_C15 + 1)
+p2 = float(1 + unk_C15_imp - unk_C15_click) / (total_impression - total_click + unique_C15 + 1)
+print '%s,%.6f,%.6f' % ("unk_C15", p1, p2)
+
+
+p1 = float(1 + unk_C16_click) / (total_click + unique_C16 + 1)
+p2 = float(1 + unk_C16_imp - unk_C16_click) / (total_impression - total_click + unique_C16 + 1)
+print '%s,%.6f,%.6f' % ("unk_C16", p1, p2)
+
+
+p1 = float(1 + unk_C17_click) / (total_click + unique_C17 + 1)
+p2 = float(1 + unk_C17_imp - unk_C17_click) / (total_impression - total_click + unique_C17 + 1)
+print '%s,%.6f,%.6f' % ("unk_C17", p1, p2)
+
+
+p1 = float(1 + unk_C18_click) / (total_click + unique_C18 + 1)
+p2 = float(1 + unk_C18_imp - unk_C18_click) / (total_impression - total_click + unique_C18 + 1)
+print '%s,%.6f,%.6f' % ("unk_C18", p1, p2)
+
+
+p1 = float(1 + unk_C19_click) / (total_click + unique_C19 + 1)
+p2 = float(1 + unk_C19_imp - unk_C19_click) / (total_impression - total_click + unique_C19 + 1)
+print '%s,%.6f,%.6f' % ("unk_C19", p1, p2)
+
+p1 = float(1 + unk_C20_click) / (total_click + unique_C20 + 1)
+p2 = float(1 + unk_C20_imp - unk_C20_click) / (total_impression - total_click + unique_C20 + 1)
+print '%s,%.6f,%.6f' % ("unk_C20", p1, p2)
+
+p1 = float(1 + unk_C21_click) / (total_click + unique_C21 + 1)
+p2 = float(1 + unk_C21_imp - unk_C21_click) / (total_impression - total_click + unique_C21 + 1)
+print '%s,%.6f,%.6f' % ("unk_C21", p1, p2)
+
 
 #calculate Pr(click) and Pr(noclick)
 p1 = float(total_click) / (total_impression)
-p2 = float(total_nonclick) / (total_impression)
-print '%s\t%.9f\t%.9f' % ('totaltotal', p1, p2)
+p2 = float(total_impression - total_click) / (total_impression)
+print '%s,%.6f,%.6f' % ('totaltotal', p1, p2)
